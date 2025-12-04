@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown Timer</title>
+
     <style>
         * {
             margin: 0;
@@ -13,7 +14,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ccd4f7 0%, #ffffff 100%);
+            background: linear-gradient(135deg, #c3ccef 0%, #ffffff 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -27,32 +28,15 @@
             z-index: 10;
         }
 
-        .logo {
-            font-size: 120px;
-            font-weight: bold;
-            background: linear-gradient(45deg, #fff, #f0f0f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 50px;
-            animation: float 3s ease-in-out infinite;
-            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
+        /* Input UI */
         .input-container {
             display: flex;
             gap: 10px;
             justify-content: center;
             align-items: center;
             margin-bottom: 30px;
-            opacity: 1;
-            transform: scale(1);
-            transition: all 0.5s ease;
+            padding: 20px;
+            transition: 0.5s ease;
         }
 
         .input-container.hidden {
@@ -63,65 +47,59 @@
         }
 
         input {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             font-size: 32px;
             text-align: center;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            color: white;
-            border-radius: 15px;
+            color: #111;
+            border: none;
+            border-radius: 20px;
+            background: #ffffffdd;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
             outline: none;
-            transition: all 0.3s ease;
+            transition: 0.3s;
+            font-weight: 600;
         }
 
         input:focus {
-            border-color: rgba(255, 255, 255, 0.8);
-            background: rgba(255, 255, 255, 0.2);
             transform: scale(1.05);
-        }
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            background: white;
         }
 
         .separator {
-            font-size: 40px;
-            color: white;
+            font-size: 42px;
+            color: #111;
             font-weight: bold;
         }
 
+        /* Button */
         button {
+            margin-top: 10px;
             padding: 15px 50px;
-            font-size: 20px;
-            background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+            font-size: 22px;
+            background: linear-gradient(45deg, #ff5f6d, #ff3d48);
             color: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             font-weight: bold;
         }
 
         button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
 
-        button:active {
-            transform: translateY(-1px);
-        }
-
+        /* Countdown */
         .countdown {
-            font-size: 100px;
-            color: white;
+            font-size: 90px;
+            color: #111;
             font-weight: bold;
             opacity: 0;
             transform: scale(0);
-            transition: all 0.5s ease;
-            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: 0.5s ease;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.25);
         }
 
         .countdown.active {
@@ -135,75 +113,53 @@
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.15); }
         }
 
-        /* Particle background */
-        .particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            animation: rise 15s infinite;
-        }
-
-        @keyframes rise {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(100px);
-                opacity: 0;
-            }
-        }
-
+        /* Time's Up pop animation */
         .complete-message {
-            font-size: 60px;
-            color: white;
+            font-size: 70px;
+            color: #111;
             font-weight: bold;
             opacity: 0;
             transform: scale(0);
-            transition: all 0.5s ease;
-            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: 0.5s ease;
         }
 
         .complete-message.active {
             opacity: 1;
-            transform: scale(1);
-            animation: celebration 0.6s ease;
+            animation: popIn 0.6s ease forwards;
         }
 
-        @keyframes celebration {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.2) rotate(-5deg); }
-            75% { transform: scale(1.2) rotate(5deg); }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Confetti falling from top */
+        .confetti {
+            position: fixed;
+            width: 14px;
+            height: 14px;
+            top: -20px;
+            border-radius: 3px;
+            animation: fall 3.5s linear forwards;
+            z-index: 9999;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
     </style>
 </head>
+
 <body>
-    <!-- Particle background -->
-    <script>
-        for(let i = 0; i < 20; i++) {
-            let particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 15 + 's';
-            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-            document.body.appendChild(particle);
-        }
-    </script>
 
     <div class="container">
-                <img width="50%" src="loopx_logo.png" alt="LoopX Logo">
-        
+        <img width="50%" src="loopx_logo.png" alt="LoopX Logo">
+
         <div class="input-container" id="inputContainer">
             <input type="number" id="hours" placeholder="00" min="0" max="99">
             <span class="separator">:</span>
@@ -220,37 +176,39 @@
 
     <script>
         let countdownInterval;
+        let confettiInterval;
         let totalSeconds = 0;
 
         function startCountdown() {
-            const hours = parseInt(document.getElementById('hours').value) || 0;
-            const minutes = parseInt(document.getElementById('minutes').value) || 0;
-            const seconds = parseInt(document.getElementById('seconds').value) || 0;
+            const h = parseInt(document.getElementById('hours').value) || 0;
+            const m = parseInt(document.getElementById('minutes').value) || 0;
+            const s = parseInt(document.getElementById('seconds').value) || 0;
 
-            totalSeconds = hours * 3600 + minutes * 60 + seconds;
+            totalSeconds = h * 3600 + m * 60 + s;
 
             if (totalSeconds <= 0) {
-                alert('Please enter a valid time!');
+                alert("Enter time!");
                 return;
             }
 
-            // Hide input and button
-            document.getElementById('inputContainer').classList.add('hidden');
-            document.getElementById('startBtn').style.display = 'none';
-            
-            // Show countdown
-            document.getElementById('countdown').classList.add('active');
+            document.getElementById("inputContainer").classList.add("hidden");
+            document.getElementById("startBtn").style.display = "none";
+            document.getElementById("countdown").classList.add("active");
 
-            // Start the countdown
             countdownInterval = setInterval(updateCountdown, 1000);
-            updateCountdown(); // Initial call
+            updateCountdown();
         }
 
         function updateCountdown() {
+            const countdownEl = document.getElementById("countdown");
+
             if (totalSeconds <= 0) {
                 clearInterval(countdownInterval);
-                document.getElementById('countdown').classList.remove('active');
-                document.getElementById('completeMessage').classList.add('active');
+
+                countdownEl.classList.remove("active");
+                document.getElementById("completeMessage").classList.add("active");
+
+                startContinuousConfetti();
                 return;
             }
 
@@ -258,28 +216,46 @@
             const minutes = Math.floor((totalSeconds % 3600) / 60);
             const seconds = totalSeconds % 60;
 
-            const display = 
-                String(hours).padStart(2, '0') + ':' +
-                String(minutes).padStart(2, '0') + ':' +
-                String(seconds).padStart(2, '0');
+            countdownEl.textContent =
+                String(hours).padStart(2, "0") + ":" +
+                String(minutes).padStart(2, "0") + ":" +
+                String(seconds).padStart(2, "0");
 
-            const countdownEl = document.getElementById('countdown');
-            countdownEl.textContent = display;
-            
-            // Add pulse animation
-            countdownEl.classList.remove('pulse');
-            void countdownEl.offsetWidth; // Trigger reflow
-            countdownEl.classList.add('pulse');
+            if (totalSeconds <= 10) {
+                countdownEl.classList.remove("pulse");
+                void countdownEl.offsetWidth;
+                countdownEl.classList.add("pulse");
+            }
 
             totalSeconds--;
         }
 
-        // Allow Enter key to start
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') startCountdown();
+        /* Continuous confetti while message is active */
+        function startContinuousConfetti() {
+            confettiInterval = setInterval(createConfetti, 100);
+        }
+
+        function createConfetti() {
+            let c = document.createElement("div");
+            c.classList.add("confetti");
+
+            c.style.left = Math.random() * 100 + "vw";
+            c.style.backgroundColor =
+                ["#ff4757", "#1e90ff", "#2ed573", "#ffa502", "#eccc68"]
+                [Math.floor(Math.random() * 5)];
+
+            c.style.animationDuration = (Math.random() * 2 + 3) + "s";
+
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 4000);
+        }
+
+        document.querySelectorAll("input").forEach(inp => {
+            inp.addEventListener("keypress", e => {
+                if (e.key === "Enter") startCountdown();
             });
         });
     </script>
+
 </body>
 </html>
